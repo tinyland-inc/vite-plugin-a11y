@@ -7,6 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   root: __dirname,
   test: {
+    name: 'vite-plugin-a11y',
     root: __dirname,
     globals: true,
     include: ['tests/**/*.test.ts'],
@@ -15,13 +16,20 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
       include: ['src/**/*.ts'],
-      exclude: ['src/**/*.d.ts']
-    }
+      exclude: ['src/**/*.d.ts'],
+      thresholds: {
+        statements: 60,
+        branches: 55,
+        functions: 60,
+        lines: 60,
+      },
+    },
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src')
-    }
-  }
+      '@': resolve(__dirname, './src'),
+    },
+  },
 });

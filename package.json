@@ -1,6 +1,6 @@
 {
-  "name": "@tinyland/vite-plugin-a11y",
-  "version": "1.0.0",
+  "name": "@tinyland-inc/vite-plugin-a11y",
+  "version": "0.1.0",
   "description": "Vite plugin for accessibility validation of Svelte components - WCAG compliance checking at build time",
   "type": "module",
   "main": "./dist/index.js",
@@ -37,10 +37,11 @@
     "validation"
   ],
   "author": "Tinyland.dev",
-  "license": "MIT",
+  "license": "Zlib AND LicenseRef-Tinyland-Proprietary",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/tinyland/tinyland.dev"
+    "url": "https://gitlab.com/tinyland/tinyland.dev",
+    "directory": "packages/vite-plugin-a11y"
   },
   "dependencies": {
     "magic-string": "^0.30.0"
