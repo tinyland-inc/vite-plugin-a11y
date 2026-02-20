@@ -1,5 +1,5 @@
 # Consolidation Assessment:
-# Evaluated for merge with @tinyland-inc/vite-plugin-skeleton-colors (2026-02-09).
+# Evaluated for merge with @tummycrypt/vite-plugin-skeleton-colors (2026-02-09).
 # Decision: KEEP SEPARATE.
 #   - Zero shared utility functions between the two plugins.
 #   - vite-plugin-a11y: WCAG validation (sRGB contrast, ARIA, keyboard nav) using
@@ -11,7 +11,7 @@
 #   - Merging would create unnecessary coupling between unrelated concerns.
 
 """
-BUILD.bazel for @tinyland-inc/vite-plugin-a11y.
+BUILD.bazel for @tummycrypt/vite-plugin-a11y.
 
 Dual-mode build: works with both pnpm (standalone) and Bazel (CI/production).
   Standalone: cd packages/vite-plugin-a11y && pnpm build
@@ -77,7 +77,7 @@ npm_package(
         "LICENSE",
         ":vite_plugin_a11y",
     ],
-    package = "@tinyland-inc/vite-plugin-a11y",
+    package = "@tummycrypt/vite-plugin-a11y",
     version = "0.1.0",
     visibility = ["//visibility:public"],
 )
