@@ -50,7 +50,7 @@ ts_project(
     transpiler = "tsc",
     deps = [
         "//:node_modules",
-        "//:tsconfig_base",
+        "//packages:tsconfig_base",
         # Runtime dependencies
         "//:node_modules/magic-string",
         # Peer dependencies (resolved at build time via devDependencies)
@@ -110,7 +110,7 @@ js_test(
         "//:node_modules/vitest",
         "vitest.config.ts",
     ],
-    entry_point = "//:node_modules/vitest/vitest.mjs",
+    entry_point = "//:vitest_bin",
     args = [
         "run",
         "--reporter=verbose",
@@ -136,7 +136,7 @@ ts_project(
     transpiler = "tsc",
     deps = [
         "//:node_modules",
-        "//:tsconfig_base",
+        "//packages:tsconfig_base",
         "//:node_modules/magic-string",
         "//:node_modules/svelte",
         "//:node_modules/vite",
