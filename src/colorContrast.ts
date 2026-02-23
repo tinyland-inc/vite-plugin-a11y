@@ -1,13 +1,13 @@
-/**
- * Color Contrast Utilities for Accessibility Testing
- * Implements WCAG color contrast calculations
- */
+
+
+
+
 
 import type { RGB, RGBA } from './types.js';
 
-/**
- * Convert hex color to RGB
- */
+
+
+
 export function hexToRgb(hex: string): RGB | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
@@ -19,9 +19,9 @@ export function hexToRgb(hex: string): RGB | null {
     : null;
 }
 
-/**
- * Convert RGB to hex color
- */
+
+
+
 export function rgbToHex(rgb: RGB): string {
   const toHex = (n: number) => {
     const hex = Math.round(Math.max(0, Math.min(255, n))).toString(16);
@@ -30,10 +30,10 @@ export function rgbToHex(rgb: RGB): string {
   return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`;
 }
 
-/**
- * Calculate relative luminance of a color
- * Based on WCAG 2.1 formula
- */
+
+
+
+
 export function getLuminance(color: string | RGB): number {
   let rgb: RGB | null;
 
@@ -44,25 +44,25 @@ export function getLuminance(color: string | RGB): number {
     rgb = color;
   }
 
-  // Convert RGB to sRGB
+  
   const rsRGB = rgb.r / 255;
   const gsRGB = rgb.g / 255;
   const bsRGB = rgb.b / 255;
 
-  // Apply gamma correction
+  
   const r = rsRGB <= 0.03928 ? rsRGB / 12.92 : Math.pow((rsRGB + 0.055) / 1.055, 2.4);
   const g = gsRGB <= 0.03928 ? gsRGB / 12.92 : Math.pow((gsRGB + 0.055) / 1.055, 2.4);
   const b = bsRGB <= 0.03928 ? bsRGB / 12.92 : Math.pow((bsRGB + 0.055) / 1.055, 2.4);
 
-  // Calculate luminance
+  
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-/**
- * Parse RGB/RGBA color string to RGB object
- */
+
+
+
 export function parseColor(color: string): RGB | null {
-  // Handle rgb() and rgba() format
+  
   const rgbMatch = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
   if (rgbMatch) {
     return {
@@ -72,7 +72,7 @@ export function parseColor(color: string): RGB | null {
     };
   }
 
-  // Handle hex format
+  
   if (color.startsWith('#')) {
     return hexToRgb(color);
   }
@@ -80,16 +80,16 @@ export function parseColor(color: string): RGB | null {
   return null;
 }
 
-/**
- * Calculate contrast ratio between two colors
- * Returns a value between 1 and 21
- */
+
+
+
+
 export function getContrastRatio(color1: string | RGB, color2: string | RGB): number {
   const rgb1: RGB | null = typeof color1 === 'string' ? parseColor(color1) : color1;
   const rgb2: RGB | null = typeof color2 === 'string' ? parseColor(color2) : color2;
 
   if (!rgb1 || !rgb2) {
-    return 1.0; // Return minimum contrast if colors can't be parsed
+    return 1.0; 
   }
 
   const lum1 = getLuminance(rgb1);
@@ -101,14 +101,14 @@ export function getContrastRatio(color1: string | RGB, color2: string | RGB): nu
   return (lighter + 0.05) / (darker + 0.05);
 }
 
-/**
- * Apply transparency to a color over a background
- * Returns the effective color after blending
- */
+
+
+
+
 export function applyTransparency(foreground: RGBA, background: RGB): string {
   const alpha = foreground.a;
 
-  // Alpha compositing formula
+  
   const r = Math.round(foreground.r * alpha + background.r * (1 - alpha));
   const g = Math.round(foreground.g * alpha + background.g * (1 - alpha));
   const b = Math.round(foreground.b * alpha + background.b * (1 - alpha));
@@ -116,9 +116,9 @@ export function applyTransparency(foreground: RGBA, background: RGB): string {
   return rgbToHex({ r, g, b });
 }
 
-/**
- * Check if a color combination meets WCAG requirements
- */
+
+
+
 export function meetsWCAG(
   foreground: string,
   background: string,
@@ -134,9 +134,9 @@ export function meetsWCAG(
   }
 }
 
-/**
- * Find the closest color that meets contrast requirements
- */
+
+
+
 export function adjustColorForContrast(
   color: string,
   background: string,
@@ -154,7 +154,7 @@ export function adjustColorForContrast(
 
   const step = preferLighter ? 1 : -1;
 
-  // Adjust color brightness until target ratio is met
+  
   const adjustedRgb = { ...rgb };
   let attempts = 0;
   const maxAttempts = 255;
@@ -169,7 +169,7 @@ export function adjustColorForContrast(
       return rgbToHex(adjustedRgb);
     }
 
-    // If we've reached pure white or black, stop
+    
     if (
       (preferLighter && adjustedRgb.r === 255 && adjustedRgb.g === 255 && adjustedRgb.b === 255) ||
       (!preferLighter && adjustedRgb.r === 0 && adjustedRgb.g === 0 && adjustedRgb.b === 0)
@@ -180,6 +180,6 @@ export function adjustColorForContrast(
     attempts++;
   }
 
-  // If we couldn't meet the target, return the best we could do
+  
   return rgbToHex(adjustedRgb);
 }

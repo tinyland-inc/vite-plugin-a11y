@@ -1,6 +1,6 @@
-/**
- * Main Vite plugin implementation for accessibility validation
- */
+
+
+
 
 import type { Plugin } from 'vite';
 import { parse } from 'svelte/compiler';
@@ -15,7 +15,7 @@ import {
   checkColorOnlyInfo
 } from './validators.js';
 
-/** Default configuration */
+
 const DEFAULT_OPTIONS: ResolvedOptions = {
   enabled: true,
   failOnError: process.env.NODE_ENV === 'production',
@@ -25,12 +25,12 @@ const DEFAULT_OPTIONS: ResolvedOptions = {
   reportPath: './accessibility-report.md',
   include: ['**/*.svelte'],
   exclude: ['node_modules/**'],
-  maxFileSize: 1024 * 1024 // 1MB
+  maxFileSize: 1024 * 1024 
 };
 
-/**
- * Resolve options with defaults
- */
+
+
+
 function resolveOptions(options: AccessibilityOptions): ResolvedOptions {
   return {
     enabled: options.enabled ?? DEFAULT_OPTIONS.enabled,
@@ -45,29 +45,29 @@ function resolveOptions(options: AccessibilityOptions): ResolvedOptions {
   };
 }
 
-/**
- * Vite plugin for accessibility validation
- *
- * @param options - Plugin configuration options
- * @returns Vite plugin
- *
- * @example
- * ```ts
- * // vite.config.ts
- * import { accessibilityPlugin } from '@tinyland/vite-plugin-a11y';
- *
- * export default defineConfig({
- *   plugins: [
- *     accessibilityPlugin({
- *       enabled: true,
- *       failOnError: process.env.NODE_ENV === 'production',
- *       wcagLevel: 'AA'
- *     }),
- *     sveltekit()
- *   ]
- * });
- * ```
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export function accessibilityPlugin(options: AccessibilityOptions = {}): Plugin {
   const opts = resolveOptions(options);
 
@@ -87,11 +87,11 @@ export function accessibilityPlugin(options: AccessibilityOptions = {}): Plugin 
         console.log('\n🔍 Running accessibility validation...');
       }
 
-      // Clear previous results
+      
       errors.length = 0;
       warnings.length = 0;
 
-      // Property-based tests are optional and require fast-check
+      
       if (opts.runPropertyTests && isDevelopment) {
         console.log(`⚡ Property-based tests disabled (requires fast-check)`);
       }
@@ -102,7 +102,7 @@ export function accessibilityPlugin(options: AccessibilityOptions = {}): Plugin 
       if (!id.endsWith('.svelte')) return null;
       if (opts.exclude.some((pattern) => id.includes(pattern.replace('**/', '')))) return null;
 
-      // Skip large files to avoid memory issues
+      
       try {
         const stats = fs.statSync(id);
         if (stats.size > opts.maxFileSize) {
@@ -112,20 +112,20 @@ export function accessibilityPlugin(options: AccessibilityOptions = {}): Plugin 
           return null;
         }
       } catch {
-        // If we can't stat the file, continue anyway
+        
       }
 
       const s = new MagicString(code);
       let hasChanges = false;
 
       try {
-        // Parse Svelte component
+        
         const ast = parse(code, { filename: id });
 
-        // Extract color pairs from styles
+        
         const colorPairs = extractColorPairs(code, id);
 
-        // Validate color contrast
+        
         const contrastResults = validateColorContrast(colorPairs, opts.wcagLevel, id);
         for (const result of contrastResults) {
           if (result.severity === 'error') {
@@ -135,7 +135,7 @@ export function accessibilityPlugin(options: AccessibilityOptions = {}): Plugin 
               warnings.push(result);
             }
 
-            // Add warning comment in development
+            
             if (isDevelopment && result.location) {
               const element = colorPairs.find(
                 (p) => p.line === result.location!.line && p.column === result.location!.column
@@ -155,15 +155,15 @@ export function accessibilityPlugin(options: AccessibilityOptions = {}): Plugin 
           }
         }
 
-        // Check for missing ARIA labels
+        
         const ariaResults = checkAriaLabels(ast, code, id);
         warnings.push(...ariaResults);
 
-        // Check for keyboard navigation issues
+        
         const keyboardResults = checkKeyboardNavigation(ast, code, id);
         warnings.push(...keyboardResults);
 
-        // Check for color-only information
+        
         const colorOnlyResults = checkColorOnlyInfo(ast, code, id);
         warnings.push(...colorOnlyResults);
       } catch (error) {
@@ -183,7 +183,7 @@ export function accessibilityPlugin(options: AccessibilityOptions = {}): Plugin 
     buildEnd() {
       if (!opts.enabled) return;
 
-      // Report all errors and warnings (only in development or when errors exist)
+      
       if (errors.length > 0) {
         if (isDevelopment) {
           console.error('\n❌ Accessibility Errors:');
@@ -203,7 +203,7 @@ export function accessibilityPlugin(options: AccessibilityOptions = {}): Plugin 
         warnings.forEach((warning) => console.warn(warning.message));
       }
 
-      // Summary (only in development)
+      
       if (isDevelopment) {
         console.log('\n📊 Accessibility Validation Summary:');
         console.log(`   Errors: ${errors.length}`);

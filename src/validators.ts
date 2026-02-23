@@ -1,6 +1,6 @@
-/**
- * Accessibility validators for Svelte components
- */
+
+
+
 
 import type { ColorPair, ValidationResult } from './types.js';
 import { getContrastRatio } from './colorContrast.js';
@@ -28,9 +28,9 @@ interface SvelteAST {
   html?: SvelteASTNode;
 }
 
-/**
- * Get line and column from character position
- */
+
+
+
 export function getLineColumn(code: string, position: number): { line: number; column: number } {
   const lines = code.substring(0, position).split('\n');
   return {
@@ -39,9 +39,9 @@ export function getLineColumn(code: string, position: number): { line: number; c
   };
 }
 
-/**
- * Extract color pairs from style blocks
- */
+
+
+
 export function extractColorPairs(code: string, _filename: string): ColorPair[] {
   const pairs: ColorPair[] = [];
   const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/g;
@@ -52,7 +52,7 @@ export function extractColorPairs(code: string, _filename: string): ColorPair[] 
     const styleContent = styleMatch[1];
     const styleStart = styleMatch.index + styleMatch[0].indexOf(styleContent);
 
-    // Track current selector context
+    
     const selectorRegex = /([^{]+)\s*{([^}]+)}/g;
 
     let selectorMatch;
@@ -74,7 +74,7 @@ export function extractColorPairs(code: string, _filename: string): ColorPair[] 
         }
       }
 
-      // If we have both foreground and background, create a pair
+      
       if (colors.foreground && colors.background) {
         const position = getLineColumn(code, styleStart + selectorMatch.index);
         pairs.push({
@@ -91,9 +91,9 @@ export function extractColorPairs(code: string, _filename: string): ColorPair[] 
   return pairs;
 }
 
-/**
- * Validate color contrast for all pairs
- */
+
+
+
 export function validateColorContrast(
   pairs: ColorPair[],
   wcagLevel: 'AA' | 'AAA',
@@ -127,13 +127,13 @@ export function validateColorContrast(
   return results;
 }
 
-/**
- * Check for missing ARIA labels on interactive elements
- */
+
+
+
 export function checkAriaLabels(ast: SvelteAST, code: string, filename: string): ValidationResult[] {
   const results: ValidationResult[] = [];
 
-  // Interactive elements that need labels
+  
   const interactiveElements = ['button', 'a', 'input', 'select', 'textarea'];
 
   function walkNode(node: SvelteASTNode) {
@@ -173,9 +173,9 @@ export function checkAriaLabels(ast: SvelteAST, code: string, filename: string):
   return results;
 }
 
-/**
- * Check for keyboard navigation issues
- */
+
+
+
 export function checkKeyboardNavigation(
   ast: SvelteAST,
   code: string,
@@ -184,7 +184,7 @@ export function checkKeyboardNavigation(
   const results: ValidationResult[] = [];
 
   function walkNode(node: SvelteASTNode) {
-    // Check for click handlers without keyboard equivalents
+    
     if (node.type === 'Element' && node.attributes) {
       const hasOnClick = node.attributes.some(
         (attr) => attr.name === 'on:click' || attr.name === 'onclick'
@@ -211,7 +211,7 @@ export function checkKeyboardNavigation(
         });
       }
 
-      // Check for positive tabindex
+      
       const tabindexAttr = node.attributes.find((attr) => attr.name === 'tabindex');
       if (tabindexAttr && tabindexAttr.value && tabindexAttr.value[0]) {
         const tabindexValue = parseInt(tabindexAttr.value[0].data || '0');
@@ -243,9 +243,9 @@ export function checkKeyboardNavigation(
   return results;
 }
 
-/**
- * Check for color-only information
- */
+
+
+
 export function checkColorOnlyInfo(ast: SvelteAST, code: string, filename: string): ValidationResult[] {
   const results: ValidationResult[] = [];
   const colorWords = [
