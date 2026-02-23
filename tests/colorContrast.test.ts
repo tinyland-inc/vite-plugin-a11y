@@ -1,6 +1,6 @@
-/**
- * Tests for color contrast utilities
- */
+
+
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -26,7 +26,7 @@ describe('hexToRgb', () => {
 
   it('returns null for invalid hex', () => {
     expect(hexToRgb('invalid')).toBeNull();
-    expect(hexToRgb('#fff')).toBeNull(); // Short hex not supported
+    expect(hexToRgb('#fff')).toBeNull(); 
   });
 });
 
@@ -117,8 +117,8 @@ describe('meetsWCAG', () => {
   });
 
   it('has lower threshold for large text', () => {
-    // 3:1 is acceptable for large text AA
-    const color1 = '#767676'; // ~4.5:1 ratio with white
+    
+    const color1 = '#767676'; 
     expect(meetsWCAG(color1, '#ffffff', 'AA', 'large')).toBe(true);
   });
 });
@@ -131,18 +131,18 @@ describe('adjustColorForContrast', () => {
 
   it('lightens color to meet contrast when preferLighter is true', () => {
     const result = adjustColorForContrast('#777777', '#ffffff', 4.5, true);
-    // Result should be lighter (higher luminance)
+    
     expect(getLuminance(result)).toBeGreaterThan(getLuminance('#777777'));
   });
 
   it('darkens color to meet contrast when preferLighter is false', () => {
-    // Use a light gray foreground on white background that doesn't meet contrast
-    // #aaaaaa on #ffffff has ratio ~2.32:1, which is below 4.5:1
-    // preferLighter=false should darken the foreground to meet contrast
+    
+    
+    
     const result = adjustColorForContrast('#aaaaaa', '#ffffff', 4.5, false);
-    // Result should be different (darker)
+    
     expect(result).not.toBe('#aaaaaa');
-    // And should have lower luminance (darker)
+    
     expect(getLuminance(result)).toBeLessThan(getLuminance('#aaaaaa'));
   });
 });

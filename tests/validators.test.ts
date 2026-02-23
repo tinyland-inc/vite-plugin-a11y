@@ -1,6 +1,6 @@
-/**
- * Tests for accessibility validators
- */
+
+
+
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -120,7 +120,7 @@ describe('validateColorContrast', () => {
   it('respects AAA level', () => {
     const pairs = [
       {
-        foreground: '#767676', // ~4.54:1 ratio - passes AA (4.5:1) but not AAA (7:1)
+        foreground: '#767676', 
         background: '#ffffff',
         element: '.test',
         line: 1,
