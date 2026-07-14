@@ -1,6 +1,6 @@
 {
   "name": "@tummycrypt/vite-plugin-a11y",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "Vite plugin for accessibility validation of Svelte components - WCAG compliance checking at build time",
   "type": "module",
   "main": "./dist/index.js",
