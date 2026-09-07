@@ -60,10 +60,6 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "public"
-  },
   "packageManager": "pnpm@10.13.1",
   "homepage": "https://github.com/tinyland-inc/vite-plugin-a11y",
   "bugs": {
